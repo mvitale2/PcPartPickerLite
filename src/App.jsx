@@ -7,24 +7,24 @@ function App() {
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    fetchData();
+      const fetchData = async () => {
+        const { data, error } = await supabase.from("CPU").select("*");
+
+        if (error) {
+          console.error("Error fetching data:", error);
+        } else {
+          setData(data);
+          console.log(`Retrieved data: ${data}`);
+        }
+      };
+
+      fetchData();
   }, []);
-
-  const fetchData = async () => {
-    const { data, error } = await supabase.from('CPU').select();
-
-    if (error) {
-      console.error("Error fetching data:", error)
-    } else {
-      setData(data);
-      console.log(`Retrieved data: ${data}`);
-    }
-  }
 
   function Body() {
     const handleClick = (e) => {
       e.preventDefault();
-      fetchData();
+      // fetchData();
     }
 
     return (
