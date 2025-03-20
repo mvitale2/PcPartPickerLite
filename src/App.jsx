@@ -13,73 +13,68 @@ function App() {
   const [hddData, setHddData] = useState([]);
   const [ramData, setRamData] = useState([]);
 
+  // State for selected items
+  const [selectedCPU, setSelectedCPU] = useState("");
+  const [selectedGPU, setSelectedGPU] = useState("");
+  const [selectedPSU, setSelectedPSU] = useState("");
+  const [selectedMotherboard, setSelectedMotherboard] = useState("");
+  const [selectedFan, setSelectedFan] = useState("");
+  const [selectedSSD, setSelectedSSD] = useState("");
+  const [selectedHDD, setSelectedHDD] = useState("");
+  const [selectedRAM, setSelectedRAM] = useState("");
+
+  // State for displayed selected components
+  const [pcBuild, setPcBuild] = useState(null);
+
   useEffect(() => {
     const fetchData = async () => {
-      // Fetch CPU data
-      const { data: cpu, error: cpuError } = await supabase
-        .from("CPU")
-        .select();
-      if (cpuError) console.error("Error fetching CPU:", cpuError);
-      else setCpuData(cpu);
+      const fetchTable = async (table, setState) => {
+        const { data, error } = await supabase.from(table).select();
+        if (error) console.error(`Error fetching ${table}:`, error);
+        else setState(data);
+      };
 
-      // Fetch GPU data
-      const { data: gpu, error: gpuError } = await supabase
-        .from("GPU")
-        .select();
-      if (gpuError) console.error("Error fetching GPU:", gpuError);
-      else setGpuData(gpu);
-
-      // Fetch PSU data
-      const { data: psu, error: psuError } = await supabase
-        .from("PSU")
-        .select();
-      if (psuError) console.error("Error fetching PSU:", psuError);
-      else setPsuData(psu);
-
-      // Fetch Motherboard data
-      const { data: motherboard, error: motherboardError } = await supabase
-        .from("Motherboard")
-        .select();
-      if (motherboardError)
-        console.error("Error fetching Motherboard:", motherboardError);
-      else setMotherboardData(motherboard);
-
-      // Fetch Fan data
-      const { data: fan, error: fanError } = await supabase
-        .from("Fan")
-        .select();
-      if (fanError) console.error("Error fetching Fan:", fanError);
-      else setFanData(fan);
-
-      // Fetch SSD data
-      const { data: ssd, error: ssdError } = await supabase
-        .from("SSD")
-        .select();
-      if (ssdError) console.error("Error fetching SSD:", ssdError);
-      else setSsdData(ssd);
-
-      // Fetch HDD data
-      const { data: hdd, error: hddError } = await supabase
-        .from("HDD")
-        .select();
-      if (hddError) console.error("Error fetching HDD:", hddError);
-      else setHddData(hdd);
-
-      // Fetch RAM data
-      const { data: ram, error: ramError } = await supabase
-        .from("RAM")
-        .select();
-      if (ramError) console.error("Error fetching RAM:", ramError);
-      else setRamData(ram);
+      await Promise.all([
+        fetchTable("CPU", setCpuData),
+        fetchTable("GPU", setGpuData),
+        fetchTable("PSU", setPsuData),
+        fetchTable("Motherboard", setMotherboardData),
+        fetchTable("Fan", setFanData),
+        fetchTable("SSD", setSsdData),
+        fetchTable("HDD", setHddData),
+        fetchTable("RAM", setRamData),
+      ]);
     };
 
     fetchData();
   }, []);
 
+  // Handle form submission (Create PC button)
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Handle form submission for creating PC build with selected parts
-    console.log("Form submitted!");
+    setPcBuild({
+      cpu: selectedCPU,
+      gpu: selectedGPU,
+      psu: selectedPSU,
+      motherboard: selectedMotherboard,
+      fan: selectedFan,
+      ssd: selectedSSD,
+      hdd: selectedHDD,
+      ram: selectedRAM,
+    });
+  };
+
+  // Reset all selections
+  const handleReset = () => {
+    setSelectedCPU("");
+    setSelectedGPU("");
+    setSelectedPSU("");
+    setSelectedMotherboard("");
+    setSelectedFan("");
+    setSelectedSSD("");
+    setSelectedHDD("");
+    setSelectedRAM("");
+    setPcBuild(null);
   };
 
   return (
@@ -90,95 +85,185 @@ function App() {
         <form onSubmit={handleSubmit}>
           <label>
             CPU:
-            <select>
+            <select
+              value={selectedCPU}
+              onChange={(e) => setSelectedCPU(e.target.value)}
+            >
+              <option value="">Select a CPU</option>
               {cpuData.map((cpu) => (
-                <option key={cpu.id} value={cpu.id}>
-                  {cpu.model} - {cpu.manufacturer} ({cpu.core_count} cores,{" "}
+                <option key={cpu.id} value={`${cpu.manufacturer} ${cpu.model}`}>
+                  {cpu.manufacturer} {cpu.model} ({cpu.core_count} cores,{" "}
                   {cpu.thread_count} threads)
                 </option>
               ))}
             </select>
           </label>
           <br />
+
           <label>
             GPU:
-            <select>
+            <select
+              value={selectedGPU}
+              onChange={(e) => setSelectedGPU(e.target.value)}
+            >
+              <option value="">Select a GPU</option>
               {gpuData.map((gpu) => (
-                <option key={gpu.id} value={gpu.id}>
-                  {gpu.model} - {gpu.brand} ({gpu.memory} memory)
+                <option key={gpu.id} value={`${gpu.brand} ${gpu.model}`}>
+                  {gpu.brand} {gpu.model} ({gpu.memory} memory)
                 </option>
               ))}
             </select>
           </label>
           <br />
+
           <label>
             PSU:
-            <select>
+            <select
+              value={selectedPSU}
+              onChange={(e) => setSelectedPSU(e.target.value)}
+            >
+              <option value="">Select a PSU</option>
               {psuData.map((psu) => (
-                <option key={psu.id} value={psu.id}>
+                <option key={psu.id} value={`${psu.brand} - ${psu.wattage}W`}>
                   {psu.brand} - {psu.wattage}W
                 </option>
               ))}
             </select>
           </label>
           <br />
+
           <label>
             Motherboard:
-            <select>
+            <select
+              value={selectedMotherboard}
+              onChange={(e) => setSelectedMotherboard(e.target.value)}
+            >
+              <option value="">Select a Motherboard</option>
               {motherboardData.map((motherboard) => (
-                <option key={motherboard.id} value={motherboard.id}>
+                <option
+                  key={motherboard.id}
+                  value={`${motherboard.brand} ${motherboard.chipset}`}
+                >
                   {motherboard.brand} - {motherboard.chipset}
                 </option>
               ))}
             </select>
           </label>
           <br />
+
           <label>
             Fan:
-            <select>
+            <select
+              value={selectedFan}
+              onChange={(e) => setSelectedFan(e.target.value)}
+            >
+              <option value="">Select a Fan</option>
               {fanData.map((fan) => (
-                <option key={fan.id} value={fan.id}>
+                <option key={fan.id} value={`${fan.brand} ${fan.rpm} RPM`}>
                   {fan.brand} - {fan.rpm} RPM
                 </option>
               ))}
             </select>
           </label>
           <br />
+
           <label>
             SSD:
-            <select>
+            <select
+              value={selectedSSD}
+              onChange={(e) => setSelectedSSD(e.target.value)}
+            >
+              <option value="">Select an SSD</option>
               {ssdData.map((ssd) => (
-                <option key={ssd.id} value={ssd.id}>
+                <option
+                  key={ssd.id}
+                  value={`${ssd.manufacturer} ${ssd.capacity}TB`}
+                >
                   {ssd.manufacturer} - {ssd.capacity} TB ({ssd.form_factor})
                 </option>
               ))}
             </select>
           </label>
           <br />
+
           <label>
             HDD:
-            <select>
+            <select
+              value={selectedHDD}
+              onChange={(e) => setSelectedHDD(e.target.value)}
+            >
+              <option value="">Select an HDD</option>
               {hddData.map((hdd) => (
-                <option key={hdd.id} value={hdd.id}>
+                <option
+                  key={hdd.id}
+                  value={`${hdd.manufacturer} ${hdd.capacity}TB`}
+                >
                   {hdd.manufacturer} - {hdd.capacity} TB ({hdd.form_factor})
                 </option>
               ))}
             </select>
           </label>
           <br />
+
           <label>
             RAM:
-            <select>
+            <select
+              value={selectedRAM}
+              onChange={(e) => setSelectedRAM(e.target.value)}
+            >
+              <option value="">Select RAM</option>
               {ramData.map((ram) => (
-                <option key={ram.id} value={ram.id}>
-                  {ram.brand} - ({ram.capacity} GB)
+                <option key={ram.id} value={`${ram.brand} ${ram.capacity}GB`}>
+                  {ram.brand} - {ram.capacity} GB
                 </option>
               ))}
             </select>
           </label>
           <br />
+
           <button type="submit">Create PC</button>
+          <button
+            type="button"
+            onClick={handleReset}
+            style={{ marginLeft: "10px" }}
+          >
+            Reset PC Build
+          </button>
         </form>
+
+        {/* Display Selected PC Build */}
+        {pcBuild && (
+          <div>
+            <h2>Your PC Build:</h2>
+            <ul>
+              <li>
+                <strong>CPU:</strong> {pcBuild.cpu || "Not selected"}
+              </li>
+              <li>
+                <strong>GPU:</strong> {pcBuild.gpu || "Not selected"}
+              </li>
+              <li>
+                <strong>PSU:</strong> {pcBuild.psu || "Not selected"}
+              </li>
+              <li>
+                <strong>Motherboard:</strong>{" "}
+                {pcBuild.motherboard || "Not selected"}
+              </li>
+              <li>
+                <strong>Fan:</strong> {pcBuild.fan || "Not selected"}
+              </li>
+              <li>
+                <strong>SSD:</strong> {pcBuild.ssd || "Not selected"}
+              </li>
+              <li>
+                <strong>HDD:</strong> {pcBuild.hdd || "Not selected"}
+              </li>
+              <li>
+                <strong>RAM:</strong> {pcBuild.ram || "Not selected"}
+              </li>
+            </ul>
+          </div>
+        )}
       </main>
     </>
   );
