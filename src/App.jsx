@@ -21,7 +21,8 @@ function App() {
   const [selectedFan, setSelectedFan] = useState("");
   const [selectedSSD, setSelectedSSD] = useState("");
   const [selectedHDD, setSelectedHDD] = useState("");
-  const [selectedRAM, setSelectedRAM] = useState("");
+  const [selectedRAM1, setSelectedRAM1] = useState("");
+  const [selectedRAM2, setSelectedRAM2] = useState("");
 
   // State for displayed selected components
   const [pcBuild, setPcBuild] = useState(null);
@@ -60,7 +61,8 @@ function App() {
       fan: selectedFan,
       ssd: selectedSSD,
       hdd: selectedHDD,
-      ram: selectedRAM,
+      ram1: selectedRAM1,
+      ram2: selectedRAM2,
     });
   };
 
@@ -73,7 +75,8 @@ function App() {
     setSelectedFan("");
     setSelectedSSD("");
     setSelectedHDD("");
-    setSelectedRAM("");
+    setSelectedRAM1("");
+    setSelectedRAM2("");
     setPcBuild(null);
   };
 
@@ -206,10 +209,26 @@ function App() {
           <br />
 
           <label>
-            RAM:
+            RAM Slot 1:
             <select
-              value={selectedRAM}
-              onChange={(e) => setSelectedRAM(e.target.value)}
+              value={selectedRAM1}
+              onChange={(e) => setSelectedRAM1(e.target.value)}
+            >
+              <option value="">Select RAM</option>
+              {ramData.map((ram) => (
+                <option key={ram.id} value={`${ram.brand} ${ram.capacity}GB`}>
+                  {ram.brand} - {ram.capacity} GB
+                </option>
+              ))}
+            </select>
+          </label>
+          <br />
+
+          <label>
+            RAM Slot 2:
+            <select
+              value={selectedRAM2}
+              onChange={(e) => setSelectedRAM2(e.target.value)}
             >
               <option value="">Select RAM</option>
               {ramData.map((ram) => (
