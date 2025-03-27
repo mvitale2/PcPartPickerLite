@@ -39,10 +39,6 @@ header h1 {
     margin-left: 10px;
 }
 
-
-
-
-
 /* Filter section */
 #filters {
     margin: 20px auto;
@@ -71,6 +67,14 @@ button {
 
 button:hover {
     background-color: #0056b3;
+}
+
+#reset-btn {
+    background-color: #FF0000;
+}
+
+#reset-btn:hover {
+    background-color: #FF7F7F;
 }
 
 /* Available Components header styling */

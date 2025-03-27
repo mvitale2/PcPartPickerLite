@@ -2,6 +2,36 @@ import React, { useState, useEffect } from 'react'
 import './Main.css'
 import supabase from "../../SupabaseClient.jsx";
 
+function PartSection({ partTitle, partName, partData, state, setState }) {
+  return (
+    <div class="section">
+      <div class="section-content">
+        <div class="vertical-division">{partTitle}</div>
+        <div class="vertical-division">Selected part: {state}</div>
+        {CreatePartButtons(partData, partName, setState)}
+      </div>
+    </div>
+  )
+}
+
+function PartButton({ partName, setState }) {
+  const handleClick = () => {
+    setState(partName);
+  };
+
+  return (
+    <button onClick={handleClick} className="part-button">
+      {partName}
+    </button>
+  );
+}
+
+function CreatePartButtons(partData, buttonName, setState) {
+  return partData.map((part) => (
+    <PartButton key={part.id} partName={buttonName} setState={setState} />
+  ));
+}
+
 function Main() {
   const [cpuData, setCpuData] = useState([]);
   const [gpuData, setGpuData] = useState([]);
@@ -81,19 +111,6 @@ function Main() {
 
   return (
     <main>
-      <nav class="navbar">
-        <div class="login-section">
-            <button>CPU</button>
-            <button>GPU</button>
-            <button>PSU</button>
-            <button>Motherboard</button>
-            <button>RAM</button>
-            <button>SSD</button>
-            <button>HDD</button>
-            <button>FAN</button>
-        </div>
-      </nav>
-
       <section id="results">
           <h2>Choose Your Components!</h2>
           <ul id="component-list"></ul>
@@ -104,135 +121,24 @@ function Main() {
           <div class="section-content">
             <div class="vertical-division">Component</div>
             <div class="vertical-division">Selection</div>
-            <div class="vertical-division">3</div>
-            <div class="vertical-division">4</div>
-            <div class="vertical-division">5</div>
-            <div class="vertical-division">6</div>
-            <div class="vertical-division">7</div>
-            <div class="vertical-division">8</div>
+            <div class="vertical-division">Part 1</div>
+            <div class="vertical-division">Part 2</div>
+            <div class="vertical-division">Part 3</div>
+            <div class="vertical-division">Part 4</div>
+            <div class="vertical-division">Part 5</div>
           </div>
         </div>
       </section>
 
-        <div class="section">
-          <div class="section-content">
-              <div class="vertical-division">CPU</div>
-              <div class="vertical-division">
-                <button onclick="openNewWindow()">+ Add CPU</button>
-              </div>
-              <div class="vertical-division">3</div>
-              <div class="vertical-division">4</div>
-              <div class="vertical-division">5</div>
-              <div class="vertical-division">6</div>
-              <div class="vertical-division">7</div>
-              <div class="vertical-division">8</div>
-            </div>
-        </div>
-
-        <div class="section">
-          <div class="section-content">
-              <div class="vertical-division">GPU</div>
-              <div class="vertical-division">
-                <button onclick="openNewWindow()">+ Add GPU</button>
-              </div>
-              <div class="vertical-division">3</div>
-              <div class="vertical-division">4</div>
-              <div class="vertical-division">5</div>
-              <div class="vertical-division">6</div>
-              <div class="vertical-division">7</div>
-              <div class="vertical-division">8</div>
-            </div>
-        </div>
-
-        <div class="section">
-          <div class="section-content">
-              <div class="vertical-division">PSU</div>
-              <div class="vertical-division">
-                <button onclick="openNewWindow()">+ Add PSU</button>
-              </div>
-              <div class="vertical-division"> 3</div>
-              <div class="vertical-division"> 4</div>
-              <div class="vertical-division"> 5</div>
-              <div class="vertical-division"> 6</div>
-              <div class="vertical-division"> 7</div>
-              <div class="vertical-division"> 8</div>
-            </div>
-        </div>
-
-        <div class="section">
-          <div class="section-content">
-              <div class="vertical-division">Motherboard</div>
-              <div class="vertical-division">
-                <button onclick="openNewWindow()">+ Add Motherboard</button>
-              </div>
-              <div class="vertical-division"> 3</div>
-              <div class="vertical-division"> 4</div>
-              <div class="vertical-division"> 5</div>
-              <div class="vertical-division"> 6</div>
-              <div class="vertical-division"> 7</div>
-              <div class="vertical-division"> 8</div>
-            </div>
-        </div>
-
-        <div class="section">
-          <div class="section-content">
-              <div class="vertical-division">RAM</div>
-              <div class="vertical-division">
-                <button onclick="openNewWindow()">+ Add RAM</button>
-              </div>
-              <div class="vertical-division"> 3</div>
-              <div class="vertical-division"> 4</div>
-              <div class="vertical-division"> 5</div>
-              <div class="vertical-division"> 6</div>
-              <div class="vertical-division"> 7</div>
-              <div class="vertical-division"> 8</div>
-            </div>
-        </div>
-
-        <div class="section">
-          <div class="section-content">
-              <div class="vertical-division">SSD</div>
-              <div class="vertical-division">
-                <button onclick="openNewWindow()">+ Add SSD</button>
-              </div>
-              <div class="vertical-division"> 3</div>
-              <div class="vertical-division"> 4</div>
-              <div class="vertical-division"> 5</div>
-              <div class="vertical-division"> 6</div>
-              <div class="vertical-division"> 7</div>
-              <div class="vertical-division"> 8</div>
-            </div>
-        </div>
-
-        <div class="section">
-          <div class="section-content">
-              <div class="vertical-division">HDD</div>
-              <div class="vertical-division">
-                <button onclick="openNewWindow()">+ Add HDD</button>
-              </div>
-              <div class="vertical-division"> 3</div>
-              <div class="vertical-division"> 4</div>
-              <div class="vertical-division"> 5</div>
-              <div class="vertical-division"> 6</div>
-              <div class="vertical-division"> 7</div>
-              <div class="vertical-division"> 8</div>
-            </div>
-        </div>
-
-        <div class="section">
-          <div class="section-content">
-              <div class="vertical-division">FAN</div>
-              <div class="vertical-division">
-                <button onclick="openNewWindow()">+ Add FAN</button>
-              </div>
-              <div class="vertical-division"> 3</div>
-              <div class="vertical-division"> 4</div>
-              <div class="vertical-division"> 5</div>
-              <div class="vertical-division"> 6</div>
-              <div class="vertical-division"> 7</div>
-              <div class="vertical-division"> 8</div>
-            </div>
+      <div className='section'>
+        <div className='section-content'>
+          <div className='vertical-division'>Build the PC!</div>
+          <div className='vertical-division'>
+            <button onClick={handleSubmit}>Create PC</button>
+            <button onClick={handleReset} id='reset-btn'>Reset</button>
           </div>
+        </div>
+      </div>
     </main>
   )
 }
