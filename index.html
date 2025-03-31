@@ -8,52 +8,10 @@
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
     <link rel="manifest" href="/site.webmanifest" />
     <title>PcPartPicker Lite</title>
-    <!-- Link CSS file -->
-    <link rel="stylesheet" href="styles.css">
   </head>
 
-
   <body>
-    
-  <div id="root"></div>
-  <script type="module" src="/src/main.jsx"></script>
-
-  <header>
-      <!-- Header Section -->
-      <h1>PC Component Picker</h1>
-  </header>
-
-  <main>
-    <!-- Filter Section: Allows users to select a component category -->
-      <section id="filters">
-          <label for="component-category">Select Category:</label>
-          <select id="component-category">
-            <!--Dropdown menu options-->
-              <option value="cpu">CPU</option>
-              <option value="gpu">GPU</option>
-              <option value="psu">PSU</option>
-              <option value="motherboard">Motherboard</option>
-              <option value="ram">RAM</option>
-              <option value="ssd">SSD</option>
-              <option value="hdd">HDD</option>
-              <option value="fan">Fan</option>
-          </select>
-          <!-- Button to trigger component search -->
-          <button onclick="fetchComponents()">Search</button>
-      </section>
-
-       <!-- Results Section: Displays available components based on selected category -->
-      <section id="results">
-        <h2>Available Components</h2>
-        <ul id="component-list"></ul>
-    </section>
-  </main>
-
-  <!-- JavaScript file for handling data and interactions -->
-  <script src="script.js"></script>
-
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>
-
-
-
