@@ -44,12 +44,6 @@ button:hover {
     background-color: #0056b3;
 }
 
-button:active,
-button:focus {
-    background-color: #357ABD; /* Keep darker blue when clicked */
-    outline: none;
-}
-
 /* Results section */
 #results {
     margin: 20px auto;
